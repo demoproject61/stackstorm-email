@@ -8,12 +8,9 @@ trigger:
   parameters: {}
 criteria:
   trigger.from:
-    pattern: johndoe@gmail.com
+    pattern: harsh6100@gmail.com
     type: contains
 action:
-  ref: core.sendmail
+  ref: core.local
   parameters:
-    body: 'We received an email'
-    to: janedoe@gmail.com
-    from: stackstorm@yourcompanyname.com
-    subject: 'Email Received'
+    cmd: echo hello world
