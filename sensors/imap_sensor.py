@@ -1,5 +1,7 @@
 import hashlib
 import base64
+import re
+import string
 
 import six
 import eventlet
@@ -25,6 +27,7 @@ DEFAULT_ATTACHMENT_DATASTORE_TTL = 1800
 
 
 class IMAPSensor(PollingSensor):
+    mylines=[]
     def __init__(self, sensor_service, config=None, poll_interval=10):
         super(IMAPSensor, self).__init__(sensor_service=sensor_service,
                                          config=config,
@@ -141,6 +144,15 @@ class IMAPSensor(PollingSensor):
         message_id = message.message_id
         headers = mime_msg.headers.items()
         has_attachments = bool(message.attachments)
+        
+        for myline in body:
+             mylines.append(myline)
+        x=myline[0].split('=')
+        gname=x[1]
+        x=myline[1].split('=')
+        location=x[1]
+        x=myline[2].split('=')
+        vmname=x[1]          
 
         # Flatten the headers so they can be unpickled
         headers = self._flattern_headers(headers=headers)
@@ -157,6 +169,9 @@ class IMAPSensor(PollingSensor):
             'has_attachments': has_attachments,
             'attachments': [],
             'mailbox_metadata': mailbox_metadata
+            'gname': gname
+            'location': location
+            'vmname': vmname
         }
 
         if has_attachments and download_attachments:
