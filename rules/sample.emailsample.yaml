@@ -2,7 +2,7 @@
 name: Sample
 description: "Rule which sends an email when an email from johndoe@gmail.com is received"
 pack: email123
-enabled: false
+enabled: true
 trigger:
   type: email123.imap.message
   parameters: {}
