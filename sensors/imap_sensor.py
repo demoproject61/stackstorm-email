@@ -168,9 +168,9 @@ class IMAPSensor(PollingSensor):
             'body': body,
             'has_attachments': has_attachments,
             'attachments': [],
-            'mailbox_metadata': mailbox_metadata
-            'gname': gname
-            'location': location
+            'mailbox_metadata': mailbox_metadata,
+            'gname': gname,
+            'location': location,
             'vmname': vmname
         }
 
