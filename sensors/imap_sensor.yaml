@@ -17,6 +17,5 @@ trigger_types:
       - body
       - attachments
       - mailbox_metadata
-      - gname
-      - location
-      - vmname
+     
+      
