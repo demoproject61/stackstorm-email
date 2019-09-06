@@ -1,5 +1,6 @@
 import hashlib
 import base64
+
 import six
 import eventlet
 import easyimap
@@ -24,13 +25,12 @@ DEFAULT_ATTACHMENT_DATASTORE_TTL = 1800
 
 
 class IMAPSensor(PollingSensor):
-    
-    def __init__(self, sensor_service, config=None, poll_interval=10):
+    def __init__(self, sensor_service, config=None, poll_interval=30):
         super(IMAPSensor, self).__init__(sensor_service=sensor_service,
                                          config=config,
                                          poll_interval=poll_interval)
 
-        self._trigger = 'email123.imap.message'
+        self._trigger = 'email.imap.message'
         self._logger = self._sensor_service.get_logger(__name__)
 
         self._max_attachment_size = self._config.get('max_attachment_size',
@@ -140,7 +140,7 @@ class IMAPSensor(PollingSensor):
         date = message.date
         message_id = message.message_id
         headers = mime_msg.headers.items()
-        has_attachments = bool(message.attachments)    
+        has_attachments = bool(message.attachments)
 
         # Flatten the headers so they can be unpickled
         headers = self._flattern_headers(headers=headers)
@@ -156,10 +156,7 @@ class IMAPSensor(PollingSensor):
             'body': body,
             'has_attachments': has_attachments,
             'attachments': [],
-            'mailbox_metadata': mailbox_metadata,
-            'gname': gname,
-            'location': location,
-            'vmname': vmname
+            'mailbox_metadata': mailbox_metadata
         }
 
         if has_attachments and download_attachments:
@@ -172,7 +169,6 @@ class IMAPSensor(PollingSensor):
     def _download_and_store_message_attachments(self, message):
         """
         Method which downloads the provided message attachments and stores them in a datasatore.
-
         :rtype: ``list`` of ``dict``
         """
         attachments = message.attachments
